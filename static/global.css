@@ -1,4 +1,5 @@
 html {
+  min-height:100%;
   --hdr-gradient: linear-gradient(
     139deg in oklab,
     oklch(70% 0.50 182),
@@ -9,7 +10,6 @@ html {
   background: var(--hdr-gradient);
   background-size: 100%;
   background-repeat: no-repeat;
-  height:100vh;
 }
 
 body {
@@ -17,4 +17,5 @@ body {
   color:oklch(1% 0.31 241);
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   
+  height: 100%;
 }
