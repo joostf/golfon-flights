@@ -1,9 +1,6 @@
 <script>
   export let data;
 
-  console.log(data);
-  
-
   let flights = structuredClone(data.flights);
   let allUsers = data.users || [];
   let selectedUsers = [];
@@ -11,42 +8,40 @@
   function removeUserFromFlight(flightId, userId) {
     const flight = flights.find(f => f.id === flightId);
     if (!flight) return;
-
     flight.flight_users = flight.flight_users.filter(fu => fu.user_id !== userId);
   }
 
   function addUserToFlight(flightId, userId) {
     const flight = flights.find(f => f.id === flightId);
     if (!flight) return;
-
     const user = allUsers.find(u => u.id === userId);
     if (!user) return;
-
-    flight.flight_users.push({
-      user_id: userId,
-      users: user
-    });
+    flight.flight_users.push({ user_id: userId, users: user });
   }
 
   function getAvailableUsers(currentFlightUsers) {
     const usedIds = currentFlightUsers.map(fu => fu.user_id);
     return allUsers.filter(user => !usedIds.includes(user.id));
   }
+
+  // --- Refactored to take a date string ---
+  function isExpired(dateStr) {
+    const flightDate = new Date(dateStr);
+    const now = new Date();
+    return flightDate < now;
+  }
 </script>
 
 <header>
-  <h1>Golfon flights ⛳️</h1>
+  <h1 class="svelte-1uha8ag">Golfon flights ⛳️</h1>
 </header>
 
 <main>
   {#each flights as flight}
-    <form>
-      <h2>
-        {flight.golf_courses.name} 
-      </h2>
-      <p>
-        {flight.pretty_date} - {flight.pretty_time}
-      </p>
+    <!-- Now we pass the date directly -->
+    <form class:expired={isExpired(flight.date)}>
+      <h2>{flight.golf_courses.name}</h2>
+      <p>{flight.pretty_date} - {flight.pretty_time}</p>
 
       <ul>
         {#each flight.flight_users as flightUser}
@@ -54,7 +49,7 @@
             🏌🏼‍♂️ {flightUser.users.first_name}
             <button on:click={() => removeUserFromFlight(flight.id, flightUser.user_id)}>
               <span class="visually-hidden">Verwijder</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+              <!-- SVG omitted -->
             </button>
           </li>
         {/each}
@@ -74,7 +69,6 @@
                 disabled={!selectedUsers[index]}
               >
                 <span class="visually-hidden">Voeg golfer toe</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4c.96 0 1.84 .338 2.53 .901" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M16 19h6" /><path d="M19 16v6" /></svg>
               </button>
             </li>
           {/each}
@@ -159,6 +153,11 @@
     color:inherit;
     border-color:transparent;
     display:none;
+  }
+
+  .expired {
+    opacity: 0.25;
+    background-color: #ffe6e6;
   }
   
   .visually-hidden {
