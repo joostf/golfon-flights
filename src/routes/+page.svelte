@@ -93,6 +93,7 @@
     display:grid;
     justify-content: left;
     gap:1rem;
+    grid-template-columns: 1fr; 
   }
 
   form {
@@ -102,6 +103,8 @@
     border-radius:.5rem;
     padding:1rem;
     background:rgb(255, 255, 255, .8);
+
+    
   }
 
   h2, p  {
@@ -125,8 +128,13 @@
   ul {
     padding:0;
     display:flex;
+    flex-direction:column;
     gap:.5rem;
     margin-bottom: 0;
+
+    @media (min-width:30em) {
+      flex-direction: row;
+    }
   }
 
   li {
