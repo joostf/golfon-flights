@@ -59,7 +59,7 @@
     {/each}
   </main>
 
-  <aside>
+  <!-- <aside>
     <h2>{golfCourse.course_name} {golfCourse.tees.male[1].tee_name} Tees <small>({golfCourse.tees.male[1].total_yards} yards)</small></h2>
     <table>
       <thead>
@@ -80,7 +80,7 @@
       {/each}
       </tbody>
     </table>
-  </aside>
+  </aside> -->
 </div>
 
 <style>
