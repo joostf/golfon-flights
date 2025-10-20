@@ -14,7 +14,7 @@
 
 <div class="wrapper">
   <header>
-    <h1 class="svelte-1uha8ag">Golfon flights </h1>
+    <h1>Golfon flights</h1>
     <button><span>Nieuwe flight</span><i>⛳️</i></button>
   </header>
 
@@ -142,10 +142,17 @@
     display:flex;
     justify-content: space-between;
     align-items: center;
-  }
 
-  h1 {
-    font-weight: normal;
+    h1 {
+      font-size:1.5rem;
+      font-weight: normal;
+
+      @container (min-width: 35em){
+        font-size: 2.5em;
+      }
+    }
+
+    
   }
 
   header button,
@@ -213,7 +220,6 @@
     gap: .5rem;
     margin-bottom: -.5rem;
     padding-bottom:1rem;
-    
     overflow-x: auto;
 
     @container (min-width: 25em) {
@@ -227,7 +233,7 @@
     display: flex;
     gap: 1rem;
     align-items: center; 
-    justify-content: center;
+    justify-content: start;
     background-color: #fff;
     border-radius:.5rem;
     padding:.25rem;
@@ -238,6 +244,7 @@
     --shadow-size:1px;
     --shadow-color:rgba(0, 0, 0, .1);
     aspect-ratio:1;
+    margin-left:auto;
   }
 
   li button:focus-visible,
