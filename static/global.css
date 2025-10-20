@@ -3,12 +3,17 @@
 }
 
 html {
+  --primary-color:oklch(70% 0.50 182);
+  --secondary-color:oklch(84% 0.3 330);
+  --default-color:oklch(1% 0.31 241);
+
   min-height:100%;
   --hdr-gradient: linear-gradient(
     139deg in oklab,
-    oklch(70% 0.50 182),
-    oklch(84% 0.3 330)
+    var(--secondary-color),
+    var(--primary-color)
   );
+
   --sdr-gradient: linear-gradient(139deg, #00e8b6, #ff69ff);
 
   background: var(--hdr-gradient);

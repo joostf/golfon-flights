@@ -39,7 +39,7 @@
           {#if flight.flight_users.length < 4}
             {#each Array(4 - flight.flight_users.length) as _, index}
               <li>
-                <select bind:value={selectedUsers[index]}>
+                🏌🏼‍♂️ <select bind:value={selectedUsers[index]}>
                   <option value="">Kies golfer</option>
                   {#each getAvailableUsers(flight.flight_users, allUsers) as user}
                     <option value={user.id}>{user.first_name}</option>
@@ -111,7 +111,7 @@
     --shadow-color:oklch(73.351% 0.26585 327.856);
     font-family: inherit;
     border-radius:50%;
-    color:oklch(1% 0.31 241);
+    color:var(--default-color);
     
     border-color:transparent;
     transition:.25s;
@@ -139,7 +139,7 @@
     z-index:100;
     padding:0 var(--_spacing);
     background:rgb(255, 255, 255, .8);
-    border-bottom:1px solid oklch(1% 0.31 241);
+    border-bottom:1px solid var(--default-color);
     display:flex;
     justify-content: space-between;
     align-items: center;
@@ -161,7 +161,7 @@
     padding-right: 3.5rem;
     line-height: 2.5;
     position: relative;
-    background: oklch(84% 0.3 330);
+    background: var(--secondary-color);
 
     span {
       font-size: 1rem;
@@ -188,7 +188,7 @@
 
   form {
     font-size: 1.5em;
-    border:1px solid oklch(1% 0.31 241);
+    border:1px solid var(--default-color);
     border-radius:.5rem;
     padding:var(--_spacing);
     background:rgb(255, 255, 255, .6);
@@ -229,7 +229,7 @@
     li {
       list-style: none;
       display: flex;
-      gap: 1rem;
+      gap: .25rem;
       align-items: center; 
       justify-content: start;
       background-color: #fff;
@@ -247,15 +247,26 @@
 
     li button:focus-visible,
     li button:hover {
-      background-color: #00e8b6;
+      background-color: var(--primary-color);
     }
   }
 
   select {
     font-size: inherit;
+    font-family: inherit;
     color:inherit;
-    border-color:transparent;
-    display:none;
+    border-color:var(--default-color);
+    border-radius:.5rem;
+    margin:0 -.25rem;
+    padding:0 .2rem;
+    flex-grow:.8;
+
+    &:has(option:checked) {
+      border-color:var(--secondary-color);
+    }
+
+
+    /* display:none; */
   }
 
   .expired {
@@ -283,7 +294,7 @@
     border: 1px solid;
     padding:.5rem;
     border-radius: .5rem;
-    background-color: oklch(84% 0.3 330);
+    background-color: var(--secondary-color);
   }
 
   td {
