@@ -130,13 +130,14 @@
   }
 
   header {
+    
     position: fixed;
     height: 5rem;
     top:0;
     left:0;
-    width:calc(100% - 3rem);
+    width:100vw;
     z-index:100;
-    padding:0 1.5rem;
+    padding:0 var(--_spacing);
     background:rgb(255, 255, 255, .8);
     border-bottom:1px solid oklch(1% 0.31 241);
     display:flex;
@@ -147,12 +148,10 @@
       font-size:1.5rem;
       font-weight: normal;
 
-      @container (min-width: 35em){
+      @container (min-width: 35em) {
         font-size: 2.5em;
       }
     }
-
-    
   }
 
   header button,
@@ -191,7 +190,7 @@
     font-size: 1.5em;
     border:1px solid oklch(1% 0.31 241);
     border-radius:.5rem;
-    padding:1rem;
+    padding:var(--_spacing);
     background:rgb(255, 255, 255, .6);
   }
 
@@ -199,7 +198,7 @@
     margin:0;
   }
 
-   h3 {
+  h3 {
     font-weight: normal;
     font-size: 1.15em;
     margin-bottom: .5rem;
@@ -226,30 +225,30 @@
         flex-direction: row;
         align-items: flex-start;
     }
-  }
 
-  li {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    align-items: center; 
-    justify-content: start;
-    background-color: #fff;
-    border-radius:.5rem;
-    padding:.25rem;
-    min-width:fit-content;
-  }
+    li {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      align-items: center; 
+      justify-content: start;
+      background-color: #fff;
+      border-radius:.5rem;
+      padding:.25rem;
+      min-width:fit-content;
+    }
 
-  li button {
-    --shadow-size:1px;
-    --shadow-color:rgba(0, 0, 0, .1);
-    aspect-ratio:1;
-    margin-left:auto;
-  }
+    li button {
+      --shadow-size:1px;
+      --shadow-color:rgba(0, 0, 0, .1);
+      aspect-ratio:1;
+      margin-left:auto;
+    }
 
-  li button:focus-visible,
-  li button:hover {
-    background-color: #00e8b6;
+    li button:focus-visible,
+    li button:hover {
+      background-color: #00e8b6;
+    }
   }
 
   select {
@@ -311,15 +310,15 @@
     height: 5rem;
     bottom: 0;
     left:0;
-    width:calc(100% - 3rem);
+    width:100vw;
     z-index:100;
-    padding:0 1.5rem;
+    padding:0 var(--_spacing);
 
     button {
       padding-right: 0;
       position: absolute;
-      right:1.5rem;
-      bottom:1.5rem;
+      right:var(--_spacing);
+      bottom:var(--_spacing);
 
       svg {
         translate: -.5rem .25rem;

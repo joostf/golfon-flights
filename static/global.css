@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html {
   min-height:100%;
   --hdr-gradient: linear-gradient(
@@ -10,14 +14,23 @@ html {
   background: var(--hdr-gradient);
   background-size: 100%;
   background-repeat: no-repeat;
+
+  container-type: inline-size;
 }
 
 body {
+  --spacing-small: .5rem;
+  --spacing: 1.5rem;
+
+  --_spacing:var(--spacing-small);
+
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   color:oklch(1% 0.31 241);
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  
   height: 100%;
   padding: 6rem 0;
-  container-type: inline-size;
+  
+  @container (min-width: 35em) {
+    --_spacing:var(--spacing);
+  }
 }
