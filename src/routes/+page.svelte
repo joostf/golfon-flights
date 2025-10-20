@@ -10,14 +10,12 @@
   let allUsers = $state(data.users || [])
   let golfCourse = $state(data.golfcourse.course || {})
   let selectedUsers = $state([])
-
-  console.log(golfCourse)
-
 </script>
 
 <div class="wrapper">
   <header>
-    <h1 class="svelte-1uha8ag">Golfon flights ⛳️</h1>
+    <h1 class="svelte-1uha8ag">Golfon flights </h1>
+    <button>⛳️</button>
   </header>
 
   <main>
@@ -90,7 +88,7 @@
     grid-template-columns: 1fr;
 
     @container (min-width: 35em){
-      grid-template-columns: 1fr 1fr; 
+      grid-template-columns: 2fr 1fr; 
     }
     
   }
@@ -99,20 +97,32 @@
     height: 5rem;
     top:0;
     left:0;
-    width:100%;
+    width:calc(100% - 3rem);
     z-index:100;
     padding:0 1.5rem;
     background:rgb(255, 255, 255, .8);
     border-bottom:1px solid oklch(1% 0.31 241);
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   h1 {
     font-weight: normal;
   }
 
+  header button {
+    font-size: 2.5em;
+    background-color: transparent;
+
+    &:focus-visible {
+      scale: 1.1;
+    } 
+  }
+
   main {
     display:grid;
-    justify-content: left;
+    justify-items: left;
     gap:1rem;
     grid-template-columns: 1fr; 
   }
@@ -124,7 +134,6 @@
     border-radius:.5rem;
     padding:1rem;
     background:rgb(255, 255, 255, .8);
-    
   }
 
   h2, p  {
@@ -151,10 +160,13 @@
     flex-direction: column;
     gap: .5rem;
     margin-bottom: 0;
-    align-items: flex-start;
+    padding-bottom:.5rem;
+    
+    overflow-x: auto;
 
     @container (min-width: 25em) {
         flex-direction: row;
+        align-items: flex-start;
     }
   }
 
@@ -167,10 +179,31 @@
     background-color: #fff;
     border-radius:.5rem;
     padding:.25rem;
+    min-width:fit-content;
   }
 
   button {
-    all:unset;
+    border-radius:50%;
+    aspect-ratio:1;
+    border-color:transparent;
+    transition:.25s;
+
+    &:focus-visible {
+      outline:none;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  li button:focus-visible,
+  li button:hover {
+    background-color: oklch(84% 0.3 330);
+    
+    svg {
+      /color:#fff
+    }
   }
 
   select {

@@ -52,6 +52,17 @@ export async function load() {
 
   formattedFlights.sort((a, b) => new Date(a.date) - new Date(b.date))
 
+   const golfcoursesRespons = await fetch('https://api.golfcourseapi.com/v1/search?search_query=dubai', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Key ' + GOLFCOURSEAPI_KEY
+    }
+  });
+
+  const golfcourses = await golfcoursesRespons.json();
+
+  console.log(golfcourses)
+
   const golfcourseRespons = await fetch('https://api.golfcourseapi.com/v1/courses/14713', {
     method: 'GET',
     headers: {
