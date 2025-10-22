@@ -1,21 +1,84 @@
 <script>
+  import { enhance } from '$app/forms'
   import removeUserFromFlight from '$lib/utils/flights/removeUser'
   import addUserToFlight from '$lib/utils/flights/addUsers'
   import getAvailableUsers from '$lib/utils/flights/getAvailableUsers'
   import isExpired from '$lib/utils/flights/isExpired'
 
-  let { data } = $props()
+  let { form, data } = $props()
 
   let flights = $state(structuredClone(data.flights))
   let allUsers = $state(data.users || [])
   let golfCourse = $state(data.golfcourse.course || {})
   let selectedUsers = $state([])
+
+  let dialog
+
+  function toggleModal(force) {
+		if (force === true || !dialog.open) {
+			dialog.showModal()
+		} else {
+			dialog.close()
+		}
+	}
+
+  function handleBackdropClick(event) {
+		const rect = dialog.getBoundingClientRect()
+		const clickedOutside =
+			event.clientX < rect.left ||
+			event.clientX > rect.right ||
+			event.clientY < rect.top ||
+			event.clientY > rect.bottom;
+
+		if (clickedOutside) toggleModal(false)
+	}
+
+  
 </script>
 
 <div class="wrapper">
   <header>
     <h1>Golfon flights</h1>
-    <button><span>Nieuwe flight</span><i>⛳️</i></button>
+    <button onclick={() => toggleModal(true)}><span>Nieuwe flight</span><i>⛳️</i></button>
+
+    <dialog bind:this={dialog} onclick={handleBackdropClick}>
+      <form method="POST" action="?/addFlight">
+        <h2>Nieuwe flight toevoegen</h2>
+
+        <label for="date">Datum</label>
+        <input type="date" name="date" id="date" required />
+        
+        <label for="time">Tijd</label>
+        <input type="time" name="time" id="name" required />
+        
+        <label for="golf_course_id">Golfbaan</label>        
+        <select name="golf_course_id" id="golf_course_id" required>
+          {#each data.golf_courses as course}
+            <option value={course.id}>{course.name}</option>
+          {/each}
+        </select>
+        
+        <label for="user_ids">Spelers</label>
+        <select name="user_ids" id=""multiple size="5" required>
+          {#each data.users as user}
+            <option value={user.id}>{user.first_name} {user.last_name}</option>
+          {/each}
+        </select>
+        <small>Houd Ctrl (Windows) of ⌘ (Mac) ingedrukt om meerdere golfers te selecteren.</small>
+        
+        <footer>
+          <button type="submit">
+            <span>Flight toevoegen</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-golf"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11 3a1 1 0 0 1 1.496 -.868l7 4a1 1 0 0 1 0 1.736l-6.496 3.712v6.42a1 1 0 0 1 -.883 .993l-.117 .007a1 1 0 0 1 -1 -1z" /><path d="M14.135 17.168a1 1 0 0 1 1.367 -.363c.916 .532 1.498 1.291 1.498 2.195c0 1.84 -2.319 3 -5 3s-5 -1.16 -5 -3c0 -.911 .577 -1.66 1.498 -2.195a1 1 0 1 1 1.004 1.73c-.365 .212 -.502 .39 -.502 .465c0 .086 .179 .296 .622 .518c.6 .3 1.456 .482 2.378 .482s1.777 -.182 2.378 -.482c.443 -.222 .622 -.432 .622 -.518c0 -.07 -.142 -.256 -.502 -.465a1 1 0 0 1 -.363 -1.367" /></svg>
+          </button>
+          <button type="button" onclick={() => toggleModal(false)}>
+            <span>Sluit venster</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-input-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 13v-4a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v5a2 2 0 0 0 2 2h7" /><path d="M22 22l-5 -5" /><path d="M17 22l5 -5" /></svg>
+          </button>
+        </footer>
+        
+      </form>
+    </dialog>
   </header>
 
   <main>
@@ -130,13 +193,12 @@
   }
 
   header {
-    
     position: fixed;
     height: 5rem;
     top:0;
     left:0;
     width:100vw;
-    z-index:100;
+    z-index:200;
     padding:0 var(--_spacing);
     background:rgb(255, 255, 255, .8);
     border-bottom:1px solid var(--default-color);
@@ -152,6 +214,66 @@
         font-size: 2.5em;
       }
     }
+
+    dialog {
+      top:6rem;
+      height:calc(100vh - 12rem);
+      overflow-y:auto;
+      border-radius:.5rem;
+      padding:1.5rem;
+      border-color: var(--default-colors);
+      font-size: .9em;
+    }
+
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    form {
+      display:flex;
+      flex-direction: column;
+      background-color: #fff;
+      padding:0;
+      border:none;
+
+      @container (min-width: 35em) {
+        width:50vw;
+      }
+
+      label {
+        margin-bottom: .5rem;
+      }
+
+      input, select {
+        margin-bottom: 1rem;
+        border-width:1px;
+      }
+      select[multiple] {
+        min-height:11rem;
+      }
+      small {
+        font-size: .85rem;
+        margin-bottom: 1rem;
+      }
+      button {
+        padding-right:.5rem;
+
+        span {
+          font-size: 1rem;
+          padding-right: 0;
+        }
+
+        svg {
+          translate: 0 .25rem;
+        }
+      }
+    }
+  }
+
+  h2 {
+    font-size: 1.25em;
+    font-weight: normal;
+    margin: 0 0 1rem;
   }
 
   header button,
@@ -251,6 +373,7 @@
     }
   }
 
+  input,
   select {
     font-size: inherit;
     font-family: inherit;
@@ -260,11 +383,6 @@
     margin:0 -.25rem;
     padding:0 .2rem;
     flex-grow:.8;
-
-    &:has(option:checked) {
-      border-color:var(--secondary-color);
-    }
-
 
     /* display:none; */
   }
@@ -316,34 +434,24 @@
     }
   }
 
-  footer {
-    position: fixed;
-    height: 5rem;
-    bottom: 0;
-    left:0;
-    width:100vw;
-    z-index:100;
-    padding:0 var(--_spacing);
+  div > footer {
+  position: fixed;
+  height: 5rem;
+  bottom: 0;
+  left:0;
+  width:100vw;
+  z-index:100;
+  padding:0 var(--_spacing);
 
-    button {
-      padding-right: 0;
-      position: absolute;
-      right:var(--_spacing);
-      bottom:var(--_spacing);
+  button {
+    padding-right: 0;
+    position: absolute;
+    right:var(--_spacing);
+    bottom:var(--_spacing);
 
-      svg {
-        translate: -.5rem .25rem;
-      }
+    svg {
+      translate: -.5rem .25rem;
     }
   }
-
-  .visually-hidden {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-  }
+}
 </style>

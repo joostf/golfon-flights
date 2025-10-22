@@ -25,7 +25,11 @@ export async function load() {
     .from('users')
     .select('*')
 
-  if (flightsError || usersError) {
+  const { data: golf_courses, error: coursesError } = await supabase
+    .from('golf_courses')
+    .select('*')
+
+  if (flightsError || usersError || coursesError) {
     console.error(flightsError || usersError)
     return {
       flights: [],
@@ -52,17 +56,6 @@ export async function load() {
 
   formattedFlights.sort((a, b) => new Date(a.date) - new Date(b.date))
 
-   const golfcoursesRespons = await fetch('https://api.golfcourseapi.com/v1/search?search_query=dubai', {
-    method: 'GET',
-    headers: {
-      'Authorization': 'Key ' + GOLFCOURSEAPI_KEY
-    }
-  });
-
-  const golfcourses = await golfcoursesRespons.json();
-
-  console.log(golfcourses)
-
   const golfcourseRespons = await fetch('https://api.golfcourseapi.com/v1/courses/14713', {
     method: 'GET',
     headers: {
@@ -75,7 +68,55 @@ export async function load() {
   return {
     flights: formattedFlights ?? [],
     users: users ?? [],
+    golf_courses: golf_courses ?? [],
     golfcourse
   }
 }
+
+export const actions = {
+  addFlight: async ({ request, locals }) => {
+    const formData = await request.formData();
+
+    console.log(formData)
+
+    const date = formData.get('date');
+    const time = formData.get('time');
+    const golf_course_id = formData.get('golf_course_id');
+    const user_ids = formData.getAll('user_ids');
+
+    const creator = locals.user?.id;
+
+    // Insert flight
+    const { data: flight, error: flightError } = await supabase
+      .from('flights')
+      .insert({ date, time, golf_course_id, creator })
+      .select()
+      .single();
+
+    if (flightError) {
+      console.error('Error inserting flight:', flightError);
+      return { success: false };
+    }
+
+    // Insert flight users
+    const flightUsers = user_ids.map(user_id => ({
+      flight_id: flight.id,
+      user_id
+    }));
+
+    if (flightUsers.length > 0) {
+      const { data: insertedUsers, error: usersError } = await supabase
+        .from('flight_users')
+        .insert(flightUsers)
+        .select();
+
+      if (usersError) console.error('Error inserting flight users:', usersError);
+
+      // Attach users to flight object so you can update the page
+      flight.flight_users = insertedUsers;
+    }
+
+    return { success: true, flight, message: 'Flight succesvol toegevoegd! ⛳️' };
+  }
+};
 
