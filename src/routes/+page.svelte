@@ -102,7 +102,7 @@
     grid-template-columns: 1fr;
 
     @container (min-width: 35em){
-      grid-template-columns: 1fr 1fr; 
+      grid-template-columns: 2fr 1fr; 
     } 
   }
 
@@ -180,7 +180,6 @@
 
   main {
     display:grid;
-    justify-items: left;
     align-items: start;
     gap:1rem;
     grid-template-columns: 1fr; 
