@@ -182,7 +182,8 @@
     display:grid;
     align-items: start;
     gap:1rem;
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
+    grid-auto-rows: max-content; 
   }
 
   form {
