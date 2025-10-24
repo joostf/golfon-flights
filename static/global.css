@@ -45,6 +45,37 @@ img {
   max-width: 100%;
 }
 
+button {
+    --shadow-size:2px;
+    --shadow-color:oklch(73.351% 0.26585 327.856);
+    background: var(--secondary-color);
+    font-family: inherit;
+    border-radius:50%;
+    color:var(--default-color);
+    display:flex;
+    align-items: center;
+    gap:.25rem;
+    border-color:transparent;
+    transition:.25s;
+    box-shadow: var(--shadow-size) var(--shadow-size) 0 0px var(--shadow-color);
+
+    &:focus-visible,
+    &:hover {
+      outline:none;
+      translate: var(--shadow-size) var(--shadow-size);
+      box-shadow: none;
+    } 
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &.secondary {
+      --shadow-color:oklch(55.534% 0.09481 194.807);
+      background-color: oklch(0.8 0.14 195.36);
+    }
+  }
+
 .visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -53,4 +84,13 @@ img {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+@keyframes fadeout {
+  from {opacity: 1}
+  to {opacity:0}
 }

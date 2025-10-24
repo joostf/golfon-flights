@@ -74,49 +74,150 @@ export async function load() {
 }
 
 export const actions = {
-  addFlight: async ({ request, locals }) => {
-    const formData = await request.formData();
+	addFlight: async ({ request, locals }) => {
+		const formData = await request.formData();
+		const date = formData.get('date');
+		const time = formData.get('time');
+		const golf_course_id = formData.get('golf_course_id');
+		const user_ids = formData.getAll('user_ids');
+		const creator = locals.user?.id || null;
 
-    console.log(formData)
+		// insert flight
+		const { data: flight, error: flightError } = await supabase
+			.from('flights')
+			.insert({ date, time, golf_course_id, creator })
+			.select('id, date, time, golf_course_id, creator, created_at, golf_courses(name), flight_users(user_id, users!inner(id, first_name, last_name))')
+			.single();
 
-    const date = formData.get('date');
-    const time = formData.get('time');
-    const golf_course_id = formData.get('golf_course_id');
-    const user_ids = formData.getAll('user_ids');
+		if (flightError) {
+			return { success: false, message: 'Kon flight niet aanmaken', action: 'add' };
+		}
 
-    const creator = locals.user?.id;
+		// insert flight_users if any
+		if (user_ids.length > 0) {
+			const flightUsers = user_ids.map((user_id) => ({
+				flight_id: flight.id,
+				user_id
+			}));
 
-    // Insert flight
-    const { data: flight, error: flightError } = await supabase
-      .from('flights')
-      .insert({ date, time, golf_course_id, creator })
-      .select()
-      .single();
+			const { error: usersError } = await supabase.from('flight_users').insert(flightUsers);
+			if (usersError) {
+				// still return success for flight creation but indicate partial failure
+				return {
+					success: true,
+					message: 'Flight aangemaakt, maar spelers konden niet gekoppeld worden',
+					action: 'add',
+					flight
+				};
+			}
+		}
 
-    if (flightError) {
-      console.error('Error inserting flight:', flightError);
-      return { success: false };
-    }
+		// re-fetch flight with related users & course to return full object
+		const { data: fullFlight } = await supabase
+			.from('flights')
+			.select(
+				`id, date, time, golf_course_id, creator, created_at,
+         golf_courses!inner(id, name),
+         flight_users!inner(user_id, users!inner(id, first_name, last_name))`
+			)
+			.eq('id', flight.id)
+			.single();
 
-    // Insert flight users
-    const flightUsers = user_ids.map(user_id => ({
-      flight_id: flight.id,
-      user_id
-    }));
+		return { success: true, message: 'Flight aangemaakt', action: 'add', flight: fullFlight };
+	},
 
-    if (flightUsers.length > 0) {
-      const { data: insertedUsers, error: usersError } = await supabase
-        .from('flight_users')
-        .insert(flightUsers)
-        .select();
+	editFlight: async ({ request, locals }) => {
+		const formData = await request.formData();
+		const id = formData.get('flight_id');
+		const date = formData.get('date');
+		const time = formData.get('time');
+		const golf_course_id = formData.get('golf_course_id');
+		const user_ids = formData.getAll('user_ids');
 
-      if (usersError) console.error('Error inserting flight users:', usersError);
+		// update flights row
+		const { data: updated, error: updateError } = await supabase
+			.from('flights')
+			.update({ date, time, golf_course_id })
+			.eq('id', id)
+			.select()
+			.single();
 
-      // Attach users to flight object so you can update the page
-      flight.flight_users = insertedUsers;
-    }
+		if (updateError) {
+			return { success: false, message: 'Kon flight niet bijwerken', action: 'edit' };
+		}
 
-    return { success: true, flight, message: 'Flight succesvol toegevoegd! ⛳️' };
+		// replace flight_users: delete existing then insert new set
+		const { error: deleteError } = await supabase.from('flight_users').delete().eq('flight_id', id);
+		if (deleteError) {
+			// log but continue
+			console.error('Could not delete existing flight_users', deleteError);
+		}
+
+		if (user_ids && user_ids.length > 0) {
+			const flightUsers = user_ids.map((user_id) => ({
+				flight_id: id,
+				user_id
+			}));
+			const { error: insertError } = await supabase.from('flight_users').insert(flightUsers);
+			if (insertError) {
+				return { success: false, message: 'Kon spelers niet bijwerken', action: 'edit' };
+			}
+		}
+
+		// fetch full updated flight
+		const { data: fullFlight, error: fetchError } = await supabase
+			.from('flights')
+			.select(
+				`id, date, time, golf_course_id, creator, created_at,
+         golf_courses!inner(id, name),
+         flight_users!inner(user_id, users!inner(id, first_name, last_name))`
+			)
+			.eq('id', id)
+			.single();
+
+		if (fetchError) {
+			return { success: true, message: 'Flight bijgewerkt (gedeeltelijk)', action: 'edit', flight: updated };
+		}
+
+		return { success: true, message: 'Flight bijgewerkt', action: 'edit', flight: fullFlight };
+	},
+
+	deleteFlight: async ({ request, locals }) => {
+		const formData = await request.formData();
+		const id = formData.get('flight_id');
+
+		const { error } = await supabase.from('flights').delete().eq('id', id);
+
+		if (error) {
+			return { success: false, message: 'Kon flight niet verwijderen', action: 'delete' };
+		}
+
+		// cascade will remove flight_users due to FK ON DELETE CASCADE
+		return { success: true, message: 'Flight verwijderd', action: 'delete', id };
+	},
+
+  removeUserFromFlight: async ({ request, locals }) => {
+    const fd = await request.formData();
+    const flight_id = fd.get('flight_id');
+    const user_id = fd.get('user_id');
+
+    // delete from flight_users table
+    const { error } = await supabase
+      .from('flight_users')
+      .delete()
+      .match({ flight_id, user_id });
+
+    if (error) return { success: false, message: 'Kon speler niet verwijderen' };
+
+    // optionally return the id so client can update locally
+    return { 
+      success: true, 
+      action: 'removeUser', 
+      message: 'Golfer verwijderd uit flight',
+      flight_id, 
+      user_id 
+    };
   }
+
 };
 
