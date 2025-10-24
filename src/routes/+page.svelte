@@ -84,8 +84,8 @@
 
 		<button onclick={openCreateModal}><span>Nieuwe flight</span><i>⛳️</i></button>
     <button class="secondary" onclick={toggleMode}>
-      <span>{mode === 'edit' ? 'Stop Editing' : 'Edit Flights'}</span> 
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+      <span>{mode === 'edit' ? 'Stop bewerken' : 'Bewerk Flights'}</span> 
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
     </button>
 
 		<dialog bind:this={addFlightDialog} class="add-flight-dialog">
@@ -146,11 +146,11 @@
 						</option>
 					{/each}
 				</select>
-				<small>Houd Ctrl (Windows) of ⌘ (Mac) ingedrukt om meerdere golfers te selecteren.</small>
+				<em>Houd Ctrl <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-windows"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17.8 20l-12 -1.5c-1 -.1 -1.8 -.9 -1.8 -1.9v-9.2c0 -1 .8 -1.8 1.8 -1.9l12 -1.5c1.2 -.1 2.2 .8 2.2 1.9v12.1c0 1.2 -1.1 2.1 -2.2 1.9z" /><path d="M12 5l0 14" /><path d="M4 12l16 0" /></svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 13v5c0 1.57 -1.248 2.832 -2.715 2.923l-.113 .003l-.042 .018a1 1 0 0 1 -.336 .056l-.118 -.008l-4.676 -.585v-7.407zm-10 0v7.157l-5.3 -.662c-1.514 -.151 -2.7 -1.383 -2.7 -2.895v-3.6zm0 -9.158v7.158h-8v-3.6c0 -1.454 1.096 -2.648 2.505 -2.87zm10 2.058v5.1h-8v-7.409l4.717 -.589c1.759 -.145 3.283 1.189 3.283 2.898" /> of ⌘ <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-apple"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8.286 7.008c-3.216 0 -4.286 3.23 -4.286 5.92c0 3.229 2.143 8.072 4.286 8.072c1.165 -.05 1.799 -.538 3.214 -.538c1.406 0 1.607 .538 3.214 .538s4.286 -3.229 4.286 -5.381c-.03 -.011 -2.649 -.434 -2.679 -3.23c-.02 -2.335 2.589 -3.179 2.679 -3.228c-1.096 -1.606 -3.162 -2.113 -3.75 -2.153c-1.535 -.12 -3.032 1.077 -3.75 1.077c-.729 0 -2.036 -1.077 -3.214 -1.077z" /><path d="M12 4a2 2 0 0 0 2 -2a2 2 0 0 0 -2 2" /></svg> ingedrukt om meerdere golfers te selecteren.</em>
 
 				<footer>
 					<button type="submit">
-						<span>{mode === 'create' ? 'Flight toevoegen' : 'Wijzigingen opslaan'}</span>
+						<span>{mode === 'create' ? 'Toevoegen' : 'Opslaan'}</span>
 						{#if mode === 'create'}
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-golf"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11 3a1 1 0 0 1 1.496 -.868l7 4a1 1 0 0 1 0 1.736l-6.496 3.712v6.42a1 1 0 0 1 -.883 .993l-.117 .007a1 1 0 0 1 -1 -1z" /><path d="M14.135 17.168a1 1 0 0 1 1.367 -.363c.916 .532 1.498 1.291 1.498 2.195c0 1.84 -2.319 3 -5 3s-5 -1.16 -5 -3c0 -.911 .577 -1.66 1.498 -2.195a1 1 0 1 1 1.004 1.73c-.365 .212 -.502 .39 -.502 .465c0 .086 .179 .296 .622 .518c.6 .3 1.456 .482 2.378 .482s1.777 -.182 2.378 -.482c.443 -.222 .622 -.432 .622 -.518c0 -.07 -.142 -.256 -.502 -.465a1 1 0 0 1 -.363 -1.367" /></svg>
 						{:else}
@@ -160,7 +160,7 @@
 					</button>
 
 					<button type="button" onclick={() => toggleModal(false, addFlightDialog)}>
-						<span>Sluit venster</span>
+						<span>Sluiten</span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-input-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 13v-4a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v5a2 2 0 0 0 2 2h7" /><path d="M22 22l-5 -5" /><path d="M17 22l5 -5" /></svg>
 					</button>
 				</footer>
@@ -237,6 +237,13 @@
         </article>
       {/if}
     {/each}
+
+    <footer>
+      <button>
+        <span>Download alle flights</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-type-xls"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M4 15l4 6" /><path d="M4 21l4 -6" /><path d="M17 20.25c0 .414 .336 .75 .75 .75h1.25a1 1 0 0 0 1 -1v-1a1 1 0 0 0 -1 -1h-1a1 1 0 0 1 -1 -1v-1a1 1 0 0 1 1 -1h1.25a.75 .75 0 0 1 .75 .75" /><path d="M11 15v6h3" /></svg>
+      </button>
+    </footer>
 	</main>
 
   <aside>
@@ -274,18 +281,11 @@
     
   </aside>
 
-  <footer>
-    <button>
-      <span>Download alle flights</span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-type-xls"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M4 15l4 6" /><path d="M4 21l4 -6" /><path d="M17 20.25c0 .414 .336 .75 .75 .75h1.25a1 1 0 0 0 1 -1v-1a1 1 0 0 0 -1 -1h-1a1 1 0 0 1 -1 -1v-1a1 1 0 0 1 1 -1h1.25a.75 .75 0 0 1 .75 .75" /><path d="M11 15v6h3" /></svg>
-    </button>
-  </footer>
-
-  
   <dialog bind:this={userMessageDialog} >
     {#if showMessage}
       <p class:success={form?.success} class:error={form?.error}>
-          {form?.message}
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-message-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 9h8" /><path d="M8 13h6" /><path d="M10.99 19.206l-2.99 1.794v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M15 19l2 2l4 -4" /></svg>
+        {form?.message}
       </p>
     {/if}
   </dialog> 
@@ -334,103 +334,47 @@
     }
 
     dialog {
-      top:4rem;
+      top:1rem;
       border-radius:.5rem;
       padding:1.5rem;
       border-color: var(--default-colors);
       font-size: .9em;
-      max-width:40vw;
+
+      @container (min-width: 35em) {
+        max-width:40vw;
+        top:4rem;
+      }
 
       h2 {
         font-weight: bold;
       }
     }
 
-    form {
-      display:flex;
-      flex-direction: column;
-      background-color: #fff;
-      padding:0;
-      border:none;
+    button {
+      border-radius:.5rem;
+      position: relative;
+      line-height: 2.5;
+      position: relative;
 
-      label {
-        margin-bottom: .5rem;
-        font-weight: bold;
+      span {
+        font-size: 1rem;
+        padding-right: .5rem;
       }
 
-      input, select {
-        margin-bottom: 1rem;
-        border-width:1px;
-        line-height: 2;
-        height:2rem;
-      }
-
-
-      select[multiple] {
-        min-height:7rem;
-      }
-
-      small {
-        font-size: .85rem;
-        margin-bottom: 1rem;
-      }
-
-      footer {
-        display:flex;
-        gap:.5rem;
-      }
-
-      button {
-        padding-right:.5rem;
-
-        span {
-          font-size: 1rem;
-          padding-right: 0;
-        }
-
-        svg {
-          translate: 0 .25rem;
-        }
-      }
-
-      button:nth-of-type(2) {
-        --shadow-color:oklch(55.534% 0.09481 194.807);
-        background-color: oklch(0.8 0.14 195.36);
+      i {
+        font-size:3.75em;
+        font-style: normal;
+        position: absolute;
+        right:.5rem;
+        bottom:-1.75rem;
+        
       }
     }
-  }
 
-  h2 {
-    font-size: 1.25em;
-    font-weight: normal;
-    margin: 0 0 1rem;
-  }
-
-  div > header button,
-  div > footer button {
-    border-radius:.5rem;
-    position: relative;
-    line-height: 2.5;
-    position: relative;
-
-    span {
-      font-size: 1rem;
-      padding-right: .5rem;
+    > button:first-of-type {
+      padding-right: 3.5rem;
+      margin-left:auto;
     }
-
-    i {
-      font-size:3.75em;
-      font-style: normal;
-      position: absolute;
-      right:.5rem;
-      bottom:-1.75rem;
-      
-    }
-  }
-
-  div > header > button:first-of-type {
-    padding-right: 3.5rem;
-    margin-left:auto;
   }
 
   main {
@@ -439,122 +383,107 @@
     gap:1rem;
     grid-template-columns: 1fr;
     grid-auto-rows: max-content; 
-  }
 
-  article {
-    font-size: 1.5em;
-    border:1px solid var(--default-color);
-    border-radius:.5rem;
-    padding:var(--_spacing);
-    background:rgb(255, 255, 255, .6);
-    position:relative;
+    article {
+      font-size: 1.5em;
+      border:1px solid var(--default-color);
+      border-radius:.5rem;
+      padding:var(--_spacing);
+      background:rgb(255, 255, 255, .6);
+      position:relative;
 
-    div {
-      display:flex;
-      flex-direction: column;
-    }
-
-    header .flight-actions {
-      position:absolute;
-      right:1rem;
-      top:1rem;
-      display:flex;
-      flex-direction: row;
-      gap:.5rem;
-
-      form {
+      div {
         display:flex;
+        flex-direction: column;
       }
 
-      button {
-         --shadow-color:oklch(55.534% 0.09481 194.807);
-        background-color: oklch(0.8 0.14 195.36);
-        border-radius: .25rem;
+      ul {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        margin-bottom: -.5rem;
+        padding-bottom:1rem;
+        overflow-x: auto;
+
+        @container (min-width: 45em) {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        li {
+          list-style: none;
+          display: flex;
+          gap: .25rem;
+          align-items: center; 
+          justify-content: start;
+          background-color: #fff;
+          border-radius:.5rem;
+          padding:.25rem;
+          min-width:fit-content;
+
+          form {
+            margin-left: auto;
+          }
+
+          button {
+            --shadow-size:1px;
+            --shadow-color:rgba(0, 0, 0, .1);
+            background-color: #f0f0f0;
+            aspect-ratio:1;
+            margin-left:auto;
+          }
+
+          :focus-visible,
+          :hover {
+            background-color: var(--primary-color);
+          }
+        }
+      }
+
+      header .flight-actions {
+        position:absolute;
+        right:1rem;
+        top:1rem;
         display:flex;
-        gap:.25rem;
+        flex-direction: row;
+        gap:.5rem;
+
+        form {
+          display:flex;
+          background-color: transparent;
+        }
+
+        button {
+          --shadow-color:oklch(55.534% 0.09481 194.807);
+          background-color: oklch(0.8 0.14 195.36);
+          border-radius: .25rem;
+          display:flex;
+          gap:.25rem;
+        }
       }
     }
-  }
-  article.expired {
+
+    article.expired {
       opacity:.3;
     }
 
-  h3, p  {
-    margin:0;
-  }
+    footer {
+      z-index:100;
+      padding:0;
 
-  h3 {
-    font-weight: normal;
-    font-size: 1.15em;
-    margin-bottom: .5rem;
-  }
+      button {
+        --shadow-color:oklch(55.534% 0.09481 194.807);
+        background-color: oklch(0.8 0.14 195.36);
+        border-radius:.5rem;
+        gap:.25rem;
 
-  p::first-letter {
-    text-transform: capitalize;
-  }
-
-  p {
-    font-size: 0.8em;
-  }
-
-  ul {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-    margin-bottom: -.5rem;
-    padding-bottom:1rem;
-    overflow-x: auto;
-
-    @container (min-width: 45em) {
-        flex-direction: row;
-        align-items: flex-start;
+      }
     }
-
-    li {
-      list-style: none;
-      display: flex;
-      gap: .25rem;
-      align-items: center; 
-      justify-content: start;
-      background-color: #fff;
-      border-radius:.5rem;
-      padding:.25rem;
-      min-width:fit-content;
-    }
-
-    li button {
-      --shadow-size:1px;
-      --shadow-color:rgba(0, 0, 0, .1);
-      background-color: #f0f0f0;
-      aspect-ratio:1;
-      margin-left:auto;
-    }
-
-    li button:focus-visible,
-    li button:hover {
-      background-color: var(--primary-color);
-    }
-  }
-
-  input,
-  select {
-    font-size: inherit;
-    font-family: inherit;
-    color:inherit;
-    border-color:var(--default-color);
-    border-radius:.5rem;
-    margin:0 -.25rem;
-    padding:0 .2rem;
-    flex-grow:.8;
-  }
-
-  summary {
-    position: relative;
   }
 
   aside {
-    padding:0 1em;
+    padding:0;
     min-width:200px;
     display:flex;
     flex-direction: column;
@@ -571,89 +500,25 @@
     }
   }
 
-  details summary {
-    list-style: none;
-    position: relative;
-    cursor: pointer;
-  }
-
-  details summary::before {
-    content: " "; /* closed icon */
-    background: url("/caret-down.svg") no-repeat center / contain;
-    position: absolute;
-    right: 0;
-    top: -.25rem;
-    height:1.5rem;
-    width:1.5rem;
-    transform-origin: 50% 50%;
-    transition: transform .2s;
-  }
-
-  details[open] summary::before {
-    transform: rotate(180deg); /* rotate when open */
-  }
-
-  table {
-    border: 1px solid;
-    padding:.5rem;
-    border-radius: .5rem;
-    background-color: var(--secondary-color);
-    width:100%
-  }
-
-  td {
-    padding:.25rem 1.5rem;
-  }
-
-  details[open] table {
-    animation: animateDown 0.2s linear forwards;
-  }
-
-  @keyframes animateDown {
-    0% {
-      opacity: 0;
-      transform: translatey(35px);
-    }
-    100% {
-      opacity: 1;
-      transform: translatey(0);
-    }
-  }
-
-  div > footer {
-    position: fixed;
-    height: 5rem;
-    bottom: 0;
-    left:0;
-    width:100vw;
-    z-index:100;
-    padding:0 var(--_spacing);
-
-    button {
-      --shadow-color:oklch(55.534% 0.09481 194.807);
-      background-color: oklch(0.8 0.14 195.36);
-      padding-right: 0;
-      position: absolute;
-      right:var(--_spacing);
-      bottom:var(--_spacing);
-    
-      
-
-      svg {
-        translate: -.5rem .25rem;
-      }
-    }
-  }
-
   div.wrapper > dialog {
     border-radius:.5rem;
-    padding:5rem;
+    padding:2rem;
     background:rgba(255, 255, 255, .8);
     border:1px solid var(--default-color);
     outline:none;
+    width:fit-content;
 
     p {
       font-size: 1.5em;
+      position: relative;
+      padding-left: 2.5rem;
+
+      svg {
+        position: absolute;
+        left:0;
+      }
     }
   }
 </style>
+
+<!-- https://superforms.rocks/ -->
