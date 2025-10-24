@@ -316,15 +316,20 @@
     border-bottom:1px solid var(--default-color);
     display:flex;
     justify-content: flex-start;
+    flex-wrap:wrap;
     gap:1rem;
     align-items: center;
 
     h1 {
       font-size:1.5rem;
       font-weight: normal;
+      width:100%;
+      margin-bottom: -.75rem;
 
       @container (min-width: 35em) {
+        width:auto;
         font-size: 2.5em;
+        margin: 0;
       }
     }
 
