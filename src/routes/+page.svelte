@@ -1,28 +1,31 @@
 <script>
-  import { onMount } from 'svelte';
-	import { enhance } from '$app/forms';
+  import { onMount } from 'svelte'
+	import { enhance } from '$app/forms'
 
-	let { form, data } = $props();
+	let { form, data } = $props()
 
 	// state
   let flights = $state(JSON.parse(JSON.stringify(data.flights)))
-	let allUsers = $state(data.users || []);
-	let golfCourses = $state(data.golf_courses || []);
+	let allUsers = $state(data.users || [])
+	let golfCourses = $state(data.golf_courses || [])
   let golfCourse = $state(data.golfcourse.course || {})
-	let selectedUsers = $state([]);
+  let randomGiphy = data.randomGiphy
+	let selectedUsers = $state([])
+
+  console.log(randomGiphy.data)
 
 	// modal / form references & mode
-	let addFlightDialog;
-  let userMessageDialog;
-	let formEl;
-	let mode = $state('create'); // 'create' | 'edit'
+	let addFlightDialog
+  let userMessageDialog
+	let formEl
+	let mode = $state('create') // 'create' | 'edit'
   let showMessage = $state(!!form?.message)
   
   function toggleMode() {
-    mode = (mode === 'edit' ? 'create' : 'edit');
+    mode = (mode === 'edit' ? 'create' : 'edit')
   }
 
-	let editingFlight = $state(null);
+	let editingFlight = $state(null)
 
   $effect(() => {
     if (form?.message) {
@@ -39,42 +42,42 @@
 	// helpers
 	function toggleModal(force, dialog) {
 		if (force === true || !dialog.open) {
-			dialog.showModal();
-			document.body.style.overflow = 'hidden';
+			dialog.showModal()
+			document.body.style.overflow = 'hidden'
 		} else {
-			dialog.close();
-			document.body.style.overflow = '';
-			mode = 'create';
-			editingFlight = null;
+			dialog.close()
+			document.body.style.overflow = ''
+			mode = 'create'
+			editingFlight = null
 		}
 	}
 
 	function openCreateModal() {
-		mode = 'create';
-		editingFlight = null;
-		toggleModal(true , addFlightDialog);
+		mode = 'create'
+		editingFlight = null
+		toggleModal(true , addFlightDialog)
 	}
 
 	function openEditModal(flight) {
 		// clone to avoid mutating original until server confirms
-		mode = 'edit';
-    editingFlight = JSON.parse(JSON.stringify(flight));
-		toggleModal(true, addFlightDialog);
+		mode = 'edit'
+    editingFlight = JSON.parse(JSON.stringify(flight))
+		toggleModal(true, addFlightDialog)
 		// preselect users locally in the select (selected attribute handled in markup)
 	}
 
   function isExpired(date) {
-		const flightDate = new Date(date);
-		const tomorrow = new Date();
+		const flightDate = new Date(date)
+		const tomorrow = new Date()
 
 		// Set "tomorrow" to tomorrow at 00:00
-		tomorrow.setDate(tomorrow.getDate() + 1);
-		tomorrow.setHours(0, 0, 0, 0);
+		tomorrow.setDate(tomorrow.getDate() + 1)
+		tomorrow.setHours(0, 0, 0, 0)
 		
 		// Normalize the flight date for date-only comparison
-		flightDate.setHours(0, 0, 0, 0);
+		flightDate.setHours(0, 0, 0, 0)
 
-		return flightDate < tomorrow;
+		return flightDate < tomorrow
 	}
 </script>
 
@@ -90,10 +93,10 @@
 
 		<dialog bind:this={addFlightDialog} class="add-flight-dialog">
 			<form
-				bind:this={formEl}
-				method="POST"
-				action={mode === 'create' ? '?/addFlight' : '?/editFlight'}
-				class="add-flight"
+				bind:this={formEl} 
+				method="POST" 
+				action={mode === 'create' ? '?/addFlight' : '?/editFlight'} 
+				class="add-flight" 
 			>
 				<h2>{mode === 'create' ? 'Nieuwe flight toevoegen' : 'Flight bewerken'}</h2>
 
@@ -248,8 +251,10 @@
 
   <aside>
     <div> 
-      <h2 class="visually-hidden">Random golf gif</h2>
-      <img src="/giphy.gif" alt="Jimenez moonwalk">
+      <h2>{randomGiphy.data.title}</h2>
+      <img src="https://media.giphy.com/media/{randomGiphy.data.id}/giphy.gif" alt="{randomGiphy.data.title}">
+
+      <!-- randomGiphy.data.id -->
     </div>
 
     <div>
@@ -496,7 +501,7 @@
     
     h2 {
       font-weight: bold;
-      margin-bottom: 0;
+      margin-bottom: .5rem;
     }
   }
 

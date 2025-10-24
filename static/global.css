@@ -45,6 +45,7 @@ h2 {
   font-size: 1.25em;
   font-weight: normal;
   margin: 0 0 1rem;
+  text-wrap: balance;
 }
 
 h3, p  {

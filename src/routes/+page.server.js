@@ -1,7 +1,8 @@
 import { supabase } from '$lib/utils/supabaseClient';
-import { GOLFCOURSEAPI_KEY } from '$env/static/private';
+import { GOLFCOURSEAPI_KEY, GIPHY_KEY } from '$env/static/private';
 
 export async function load() {
+  // get flights
   const { data: flights, error: flightsError } = await supabase
     .from('flights')
     .select(`
@@ -21,10 +22,12 @@ export async function load() {
       )
     `);
 
+  // get users
   const { data: users, error: usersError } = await supabase
     .from('users')
     .select('*')
-
+  
+  // get goflcourses
   const { data: golf_courses, error: coursesError } = await supabase
     .from('golf_courses')
     .select('*')
@@ -37,6 +40,7 @@ export async function load() {
     }
   }
 
+  // helpers
   function formatDate(dateString) {
     const date = new Date(dateString)
     const options = { weekday: 'long', day: 'numeric', month: 'long' }
@@ -56,7 +60,9 @@ export async function load() {
 
   formattedFlights.sort((a, b) => new Date(a.date) - new Date(b.date))
 
-  const golfcourseRespons = await fetch('https://api.golfcourseapi.com/v1/courses/14713', {
+  // get golfcourse from memory lane
+  const golfCourseURL = 'https://api.golfcourseapi.com/v1/courses/14713'
+  const golfcourseRespons = await fetch(golfCourseURL, {
     method: 'GET',
     headers: {
       'Authorization': 'Key ' + GOLFCOURSEAPI_KEY
@@ -65,11 +71,17 @@ export async function load() {
 
   const golfcourse = await golfcourseRespons.json();
 
+  // get random golf giphy
+  const giphyURL = 'https://api.giphy.com/v1/gifs/random'
+  const randomGiphyRespons = await fetch(`${giphyURL}?api_key=${GIPHY_KEY}&tag=golf`);
+  const randomGiphy = await randomGiphyRespons.json();
+
   return {
     flights: formattedFlights ?? [],
     users: users ?? [],
     golf_courses: golf_courses ?? [],
-    golfcourse
+    golfcourse,
+    randomGiphy
   }
 }
 
