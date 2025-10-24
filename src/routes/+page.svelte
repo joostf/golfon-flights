@@ -21,19 +21,6 @@
 			dialog.close()
 		}
 	}
-
-  function handleBackdropClick(event) {
-		const rect = dialog.getBoundingClientRect()
-		const clickedOutside =
-			event.clientX < rect.left ||
-			event.clientX > rect.right ||
-			event.clientY < rect.top ||
-			event.clientY > rect.bottom;
-
-		if (clickedOutside) toggleModal(false)
-	}
-
-  
 </script>
 
 <div class="wrapper">
@@ -41,7 +28,7 @@
     <h1>Golfon flights</h1>
     <button onclick={() => toggleModal(true)}><span>Nieuwe flight</span><i>⛳️</i></button>
 
-    <dialog bind:this={dialog} onclick={handleBackdropClick}>
+    <dialog bind:this={dialog}>
       <form method="POST" action="?/addFlight">
         <h2>Nieuwe flight toevoegen</h2>
 
@@ -49,7 +36,7 @@
         <input type="date" name="date" id="date" required />
         
         <label for="time">Tijd</label>
-        <input type="time" name="time" id="name" required />
+        <input type="time" name="time" id="time" required />
         
         <label for="golf_course_id">Golfbaan</label>        
         <select name="golf_course_id" id="golf_course_id" required>
@@ -59,7 +46,7 @@
         </select>
         
         <label for="user_ids">Spelers</label>
-        <select name="user_ids" id=""multiple size="5" required>
+        <select name="user_ids" id="user_ids" multiple size="5" required>
           {#each data.users as user}
             <option value={user.id}>{user.first_name} {user.last_name}</option>
           {/each}
@@ -147,7 +134,9 @@
       
     </details>
     
-    
+    <h2>Random gif</h2>
+    <img src="/giphy.gif" alt="Jimenez moonwalk">
+
   </aside>
 
   <footer>
@@ -163,10 +152,12 @@
     display:grid;
     gap:1rem;
     grid-template-columns: 1fr;
+    
 
     @container (min-width: 35em){
       grid-template-columns: 2fr 1fr; 
-    } 
+      max-width:85rem;
+    }
   }
 
   button {
@@ -343,7 +334,7 @@
     padding-bottom:1rem;
     overflow-x: auto;
 
-    @container (min-width: 25em) {
+    @container (min-width: 45em) {
         flex-direction: row;
         align-items: flex-start;
     }
@@ -402,7 +393,18 @@
 
   aside {
     padding:1em;
+    min-width:200px;
   }
+
+  aside h2 {
+    font-weight: bold;
+  }
+
+ aside > *:not(h2) {
+  margin-bottom: 2rem;
+ }
+
+  
 
   details[open] summary::marker {
     content: "👆🏼";
@@ -444,10 +446,14 @@
   padding:0 var(--_spacing);
 
   button {
+    --shadow-color:oklch(55.534% 0.09481 194.807);
+    background-color: oklch(0.8 0.14 195.36);
     padding-right: 0;
     position: absolute;
     right:var(--_spacing);
     bottom:var(--_spacing);
+   
+    
 
     svg {
       translate: -.5rem .25rem;

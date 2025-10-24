@@ -37,8 +37,12 @@ body {
   
   @container (min-width: 35em) {
     --_spacing:var(--spacing);
-    
   }
+}
+
+img {
+  border-radius: .5rem;
+  max-width: 100%;
 }
 
 .visually-hidden {
