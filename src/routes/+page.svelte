@@ -5,14 +5,14 @@
 	let { form, data } = $props()
 
 	// state
-  let flights = $state(JSON.parse(JSON.stringify(data.flights)))
+  //let flights = $state(JSON.parse(JSON.stringify(data.flights)))
+  let flights = $derived(data.flights)
 	let allUsers = $state(data.users || [])
 	let golfCourses = $state(data.golf_courses || [])
   let golfCourse = $state(data.golfcourse.course || {})
   let randomGiphy = data.randomGiphy
 	let selectedUsers = $state([])
-
-  console.log(randomGiphy.data)
+  let editingFlight = $state(null)
 
 	// modal / form references & mode
 	let addFlightDialog
@@ -24,8 +24,6 @@
   function toggleMode() {
     mode = (mode === 'edit' ? 'create' : 'edit')
   }
-
-	let editingFlight = $state(null)
 
   $effect(() => {
     if (form?.message) {
@@ -97,6 +95,7 @@
 				method="POST" 
 				action={mode === 'create' ? '?/addFlight' : '?/editFlight'} 
 				class="add-flight" 
+        use:enhance
 			>
 				<h2>{mode === 'create' ? 'Nieuwe flight toevoegen' : 'Flight bewerken'}</h2>
 
@@ -211,7 +210,7 @@
                 <span>Bewerken</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
               </button>
-              <form method="POST" action="?/deleteFlight">
+              <form method="POST" action="?/deleteFlight" use:enhance>
                 <input type="hidden" name="flight_id" value={flight.id} />
                 <button type="submit" title="Verwijder flight">
                   <span>Verwijder</span>
@@ -226,7 +225,7 @@
               <li>
                 🏌🏼‍♂️ {flightUser.users.first_name} {flightUser.users.last_name}
 
-                <form method="POST" action="?/removeUserFromFlight">
+                <form method="POST" action="?/removeUserFromFlight" use:enhance>
                   <input type="hidden" name="flight_id" value={flight.id} />
                   <input type="hidden" name="user_id" value={flightUser.user_id} />
                   <button type="submit">
