@@ -74,7 +74,6 @@ img {
 form {
   display:flex;
   flex-direction: column;
-  background-color: #fff;
   padding:0;
   border:none;
 
@@ -110,12 +109,13 @@ form {
   }
 
   footer {
-    display:flex;
+    display:flex;justify-content: end;
     gap:.5rem;
   }
 
   button {
     padding-right:.5rem;
+    align-self:end;
 
     span {
       padding-right: 0;
@@ -133,11 +133,12 @@ button {
   --shadow-color:oklch(73.351% 0.26585 327.856);
   background: var(--secondary-color);
   font-family: inherit;
-  border-radius:50%;
+  border-radius:.25rem;
   color:var(--default-color);
   display:flex;
   align-items: center;
   gap:.25rem;
+  padding:.5rem;
   border-color:transparent;
   transition:.25s;
   box-shadow: var(--shadow-size) var(--shadow-size) 0 0px var(--shadow-color);
@@ -157,6 +158,10 @@ button {
     --shadow-color:oklch(55.534% 0.09481 194.807);
     background-color: oklch(0.8 0.14 195.36);
   }
+}
+
+aside h2 {
+  margin-bottom: 0;
 }
 
 details summary {
