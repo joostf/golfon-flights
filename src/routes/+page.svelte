@@ -8,8 +8,9 @@
   import Header from '$lib/components/generic/Header.svelte'
   import { onMount } from 'svelte'
 
-
   let { form, data } = $props()
+
+  let user = data.user
   
   // state
   let flights = $derived(data.flights)
@@ -22,7 +23,6 @@
   let addFlightDialogOpen = $state(false)
   let userMessageDialogOpen = $state(false)
   let showMessage = $state(false)
-
   
   // modal / form references & mode
   let addFlightDialog
@@ -77,8 +77,10 @@
 <div class="wrapper">
   <Header
     {mode}
+    {user}
     onCreateFlight={openCreateModal}
     onToggleMode={toggleMode}
+    
   />
   
   <main>
@@ -87,6 +89,7 @@
       <FlightCard 
         {flight}
         {mode}
+        {user}
         {isExpired}
         onEdit={openEditModal}
       />

@@ -1,10 +1,15 @@
 <script>
   import Icon from '$lib/components/ui/Icon.svelte'
-  let { mode, onCreateFlight, onToggleMode } = $props()
+  import { enhance } from '$app/forms'
+  let { mode, onCreateFlight, onToggleMode, user } = $props()
+
+  console.log('user from Header.svelte', user);
+  
 </script>
 
 <header>
   <h1>Golfon flights</h1>
+  {#if user}
   <button onclick={onCreateFlight}>
     <span>Nieuwe flight</span>
     <i>⛳️</i>
@@ -13,7 +18,33 @@
     <span>{mode === 'edit' ? 'Stop bewerken' : 'Bewerk Flights'}</span>
     <Icon name="edit" />
   </button>
+  {/if}
 </header>
+
+<!-- Login / Logout -->
+<div class="login-container" class:no-user={!user}>
+  {#if user}
+    <form method="POST" action="?/logout" class="logout-form" data-sveltekit-reload data-sveltekit-preserve-scroll>
+      <button type="submit">
+        <span>Uitloggen</span>
+        <Icon name="logout" size="16" />
+      </button>
+    </form>
+  {:else}
+    <form method="POST" action="?/login" class="login-form" data-sveltekit-reload data-sveltekit-preserve-scroll>
+      <input
+        type="password"
+        name="password"
+        placeholder="Wachtwoord"
+        required
+      />
+      <button type="submit">
+        <span>Inloggen</span>
+        <Icon name="login" size="16" />
+      </button>
+    </form>
+  {/if}
+</div>
 
 <style>
   header {
@@ -71,5 +102,27 @@
   header > button:first-of-type {
     padding-right: 3.5rem;
     margin-left: auto;
+  }
+
+  .login-container {
+    position: fixed;
+    right: .5rem;
+    bottom: .5rem;
+    z-index:1000;
+
+
+    form {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap:nowrap;
+
+      input {
+        margin:0 0 0 auto;
+        line-height: 2;
+        height:2.35rem
+      }
+    }
   }
 </style>

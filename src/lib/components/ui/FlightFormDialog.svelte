@@ -42,7 +42,7 @@
     action={mode === 'create' ? '?/addFlight' : '?/editFlight'}
     class="add-flight"
     use:enhance={({ formElement }) => {
-    return async ({ result, update }) => {
+      return async ({ result, update }) => {
         const confirmed = window.confirm(
           formConfigs.addFlight.message
         )
@@ -56,7 +56,6 @@
         }
       }
     }}
-    
   >
     <h2>{mode === 'create' ? 'Nieuwe flight toevoegen' : 'Flight bewerken'}</h2>
     

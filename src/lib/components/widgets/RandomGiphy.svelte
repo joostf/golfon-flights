@@ -31,7 +31,7 @@
       };
     }}
   >
-    <button type="submit" disabled={loading}>
+    <button type="submit" disabled={loading} class="secondary">
       <span>{loading ? 'Laden...' : 'Nieuwe GIF'}</span>
       <Icon name="refresh" size="16" />
     </button>

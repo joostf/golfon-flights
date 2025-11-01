@@ -3,7 +3,7 @@
   import { confirmFormSubmit } from '$lib/utils/form.js'
   import { enhance } from '$app/forms'
 
-  let { flight, mode, isExpired, onEdit } = $props()
+  let { flight, mode, isExpired, onEdit, user } = $props()
 
   function handleDeleteFlight(flightId) {
     console.log('Delete flight:', flightId)
@@ -54,7 +54,7 @@
         <p>{flight.pretty_date} - {flight.pretty_time}</p>
       </div>
 
-      {#if mode === 'edit'}
+      {#if mode === 'edit' && user}
         <div class="flight-actions">
           <button type="button" onclick={() => onEdit(flight)}>
             <span>Bewerken</span>
@@ -84,7 +84,7 @@
       {#each flight.flight_users as flightUser}
         <li>
           🏌🏼‍♂️ {flightUser.users.first_name} {flightUser.users.last_name}
-
+          {#if user}
           <!-- Remove User Form -->
           <form
             method="POST"
@@ -101,6 +101,7 @@
               <Icon name="trash" size="16" />
             </button>
           </form>
+          {/if}
         </li>
       {/each}
     </ul>
@@ -155,12 +156,16 @@ article {
         --shadow-color:rgba(0, 0, 0, .1);
         background-color: #f0f0f0;
         aspect-ratio:1;
+        border-radius: 50%;
         margin-left:auto;
       }
 
       :focus-visible,
       :hover {
         background-color: var(--primary-color);
+        border-radius: 50%;
+        translate: 0 0;
+        
       }
     }
   }
@@ -191,18 +196,4 @@ article {
 article.expired {
   opacity:.3;
 }
-
-footer {
-  z-index:100;
-  padding:0;
-
-  button {
-    --shadow-color:oklch(55.534% 0.09481 194.807);
-    background-color: oklch(0.8 0.14 195.36);
-    border-radius:.5rem;
-    gap:.25rem;
-
-  }
-}
-  
 </style>
