@@ -3,39 +3,57 @@
   import Icon from '$lib/components/ui/Icon.svelte';
 
   const { randomGiphy } = $props();
-  let giphy = $derived(randomGiphy?.data);
-  let formEl
 
+  let giphy = $state(randomGiphy?.data);
   let loading = $state(false);
 </script>
 
-<section class="random-giphy">
+<section>
   <h2>{giphy.title}</h2>
-  <img src={"https://media.giphy.com/media/" + giphy.id + "/giphy.gif"} alt={giphy.title} />
 
-  <form method="POST" use:enhance action="/?/refreshGiphy" bind:this={formEl}>
+  <img
+    src={`https://media.giphy.com/media/${giphy.id}/giphy.gif`}
+    alt={giphy.title}
+  />
+
+  <form
+    method="POST"
+    action="/?/refreshGiphy"
+    use:enhance={({ update }) => {
+      loading = true;
+
+      return async ({ result }) => {
+        loading = false;
+
+        if (result.type === 'success') {
+          giphy = result.data.randomGiphy.data; // ✅ update local state
+        }
+      };
+    }}
+  >
     <button type="submit" disabled={loading}>
-      <span>{loading ? 'Laden...' : 'Ververs GIF'}</span>
+      <span>{loading ? 'Laden...' : 'Nieuwe GIF'}</span>
       <Icon name="refresh" size="16" />
     </button>
   </form>
 </section>
 
+
 <style>
-  .random-giphy {
+  section {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .random-giphy img {
-    border-radius: 0.5rem;
-    max-width: 100%;
-  }
-
-  .random-giphy h2 {
+  h2 {
     font-size: 1.25rem;
     margin: 0;
+  }
+
+  img {
+    border-radius: 0.5rem;
+    max-width: 100%;
   }
 </style>
 

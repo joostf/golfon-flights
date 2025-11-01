@@ -1,88 +1,166 @@
 <script>
-  import { enhance } from '$app/forms';
+  import Icon from '$lib/components/ui/Icon.svelte'
+  import RandomGiphy from '$lib/components/widgets/RandomGiphy.svelte'
+  import MemoryLane from '$lib/components/widgets/MemoryLane.svelte'
+  import FlightCard from '$lib/components/flights/FlightCard.svelte'
+  import FlightFormDialog from '$lib/components/ui/FlightFormDialog.svelte'
+  import MessageDialog from '$lib/components/ui/MessageDialog.svelte'
+  import Header from '$lib/components/generic/Header.svelte'
+  import { onMount } from 'svelte'
 
-  import FlightCard from '$lib/components/flights/FlightCard.svelte';
-  import FlightForm from '$lib/components/flights/FlightForm.svelte';
-  import Icon from '$lib/components/ui/Icon.svelte';
-  import GolfCourseInfo from '$lib/components/widgets/MemoryLane.svelte';
-  import RandomGiphy from '$lib/components/widgets/RandomGiphy.svelte';
-  import Modal from '$lib/components/ui/Modal.svelte';
 
-  // Props from server
-  const { data, form } = $props();
-  const flights = $derived(data.flights);
-  const allUsers = $state(data.users || []);
-  const golfCourses = $state(data.golf_courses || []);
-  const golfCourse = $state(data.golfcourse.course || {});
-  const randomGiphy = $state(data.randomGiphy);
+  let { form, data } = $props()
+  
+  // state
+  let flights = $derived(data.flights)
+  let allUsers = $state(data.users || [])
+  let golfCourses = $state(data.golf_courses || [])
+  let golfCourse = $state(data.golfcourse.course || {})
+  let randomGiphy = data.randomGiphy
+  let selectedUsers = $state([])
+  let editingFlight = $state(null)
+  let addFlightDialogOpen = $state(false)
+  let userMessageDialogOpen = $state(false)
+  let showMessage = $state(false)
 
-  let selectedFlight = $state(null);
-  let modalOpen = $state(false);
-  let mode = $state('create'); // create | edit
+  
+  // modal / form references & mode
+  let addFlightDialog
+  let formEl
+  let mode = $state('create') // 'create' | 'edit'
 
-  // Edit flight
-  function openEdit(flight) {
-    selectedFlight = JSON.parse(JSON.stringify(flight));
+  // helpers
+  $effect(() => {
+    if (form?.message) {
+      showMessage = true;
+      const timer = setTimeout(() => {
+        showMessage = false;
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  });
+
+  function toggleMode() {
+    mode = (mode === 'edit' ? 'create' : 'edit');
+  }
+
+  function openCreateModal() {
+    mode = 'create';
+    editingFlight = null;
+    addFlightDialogOpen = true;
+  }
+
+  function openEditModal(flight) {
     mode = 'edit';
-    modalOpen = true;
+    editingFlight = JSON.parse(JSON.stringify(flight));
+    addFlightDialogOpen = true;
   }
 
-  function openCreate() {
-    selectedFlight = null;
-    mode = 'create';
-    modalOpen = true;
+  function closeFlightFormDialog() {
+    addFlightDialogOpen = false;
   }
 
-  function closeModal() {
-    modalOpen = false;
-    selectedFlight = null;
-    mode = 'create';
+  function closeMessageDialog() {
+    userMessageDialogOpen = false;
   }
 
-  function removeUser(flight, fu) {
-    console.log('Remove user:', fu.user_id, 'from flight', flight.id);
+  function isExpired(date) {
+    const flightDate = new Date(date)
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    tomorrow.setHours(0, 0, 0, 0)
+    flightDate.setHours(0, 0, 0, 0)
+    return flightDate < tomorrow
   }
 </script>
 
 <div class="wrapper">
-  <header>
-    <h1>Golfon flights</h1>
-
-    <button onclick={openCreate}>
-      <span>Nieuwe flight</span>
-      <i>⛳️</i>
-    </button>
-  </header>
-
+  <Header
+    {mode}
+    onCreateFlight={openCreateModal}
+    onToggleMode={toggleMode}
+  />
+  
   <main>
     <h2 class="visually-hidden">Flights</h2>
-
     {#each flights as flight (flight.id)}
-      <FlightCard {flight} {mode} onEdit={openEdit} onRemoveUser={removeUser} />
+      <FlightCard 
+        {flight}
+        {mode}
+        {isExpired}
+        onEdit={openEditModal}
+      />
     {/each}
+    
+    <footer>
+      <button>
+        <span>Download alle flights</span>
+        <Icon name="excel" size="24" />
+      </button>
+    </footer>
   </main>
 
   <aside>
     <RandomGiphy {randomGiphy} />
-    <GolfCourseInfo {golfCourse} />
+    <MemoryLane {golfCourse} />
   </aside>
 
-  {#if modalOpen}
-    <Modal {open} onClose={closeModal}>
-      <FlightForm
-        {mode}
-        flight={selectedFlight}
-        users={allUsers}
-        golf_courses={golfCourses}
-        onClose={closeModal}
-      />
-    </Modal>
-  {/if}
+  <FlightFormDialog 
+    open={addFlightDialogOpen}
+    on:close={closeFlightFormDialog}
+    {mode}
+    {editingFlight}
+    {golfCourses}
+    {allUsers}
+  />
+
+  <MessageDialog 
+    open={showMessage}
+    {form}
+    on:close={closeMessageDialog}
+  />
 </div>
 
 <style>
-  .wrapper { display:grid; gap:1rem; grid-template-columns: 1fr; padding:1rem; }
-  header { display:flex; justify-content: space-between; align-items:center; }
-  main { display:flex; flex-direction: column; gap:1rem; }
-  aside { display:flex; flex-direction: column; gap:2rem; }
+  /* Only layout and wrapper styles remain here */
+  div.wrapper {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @container (min-width: 35em) {
+    div.wrapper {
+      grid-template-columns: 2fr 1fr;
+      max-width: 85rem;
+    }
+  }
+
+  main {
+    display: grid;
+    align-items: start;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    grid-auto-rows: max-content;
+  }
+
+  main footer {
+    z-index: 100;
+    padding: 0;
+  }
+
+  main footer button {
+    --shadow-color: oklch(55.534% 0.09481 194.807);
+    background-color: oklch(0.8 0.14 195.36);
+    border-radius: .5rem;
+    gap: .25rem;
+  }
+
+  aside {
+    padding: 0;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
 </style>

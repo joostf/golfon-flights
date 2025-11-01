@@ -2,7 +2,7 @@
   const { golfCourse } = $props();
 </script>
 
-<section class="golf-course-info">
+<section>
   <h2>Memory lane</h2>
   <details>
     <summary>
@@ -33,15 +33,10 @@
 </section>
 
 <style>
-  .golf-course-info {
+  section {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  .golf-course-info h2 {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
   }
 
   table {

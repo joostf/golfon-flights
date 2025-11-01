@@ -213,9 +213,9 @@ export const actions = {
   },
 
   removeUserFromFlight: async ({ request }) => {
-    const fd = await request.formData();
-    const flight_id = fd.get('flight_id');
-    const user_id = fd.get('user_id');
+    const formData = await request.formData();
+    const flight_id = formData.get('flight_id');
+    const user_id = formData.get('user_id');
 
     const { error } = await supabase
       .from('flight_users')
@@ -233,10 +233,7 @@ export const actions = {
     };
   },
 
-  // 🔥 NEW ACTION: refresh giphy only
   refreshGiphy: async () => {
-
-    console.log('refresh')
     const url = 'https://api.giphy.com/v1/gifs/random';
     const response = await fetch(`${url}?api_key=${GIPHY_KEY}&tag=golf`);
     const randomGiphy = await response.json();
