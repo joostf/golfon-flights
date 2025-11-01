@@ -1,5 +1,6 @@
 <script>
   import Icon from '$lib/components/ui/Icon.svelte'
+  import { confirmFormSubmit } from '$lib/utils/form.js'
   import { enhance } from '$app/forms'
   import { createEventDispatcher } from 'svelte'
   const dispatch = createEventDispatcher()
@@ -19,6 +20,17 @@
     }
   })
 
+  function handleAddFlight(flightId) {
+    console.log('Add flight:', flightId)
+  }
+
+  const formConfigs = {
+    addFlight: {
+      message: 'Weet je zeker dat je deze flight wilt aanmaken?',
+      action: (flight) => handleAddFlight(flight.id)
+    }
+  }
+
   function close(e) {
     dispatch('close')
   }
@@ -29,17 +41,22 @@
     method="POST"
     action={mode === 'create' ? '?/addFlight' : '?/editFlight'}
     class="add-flight"
-    use:enhance={({ formElement, formData, action, cancel, submitter }) => {
-      // show loading state, disable inputs, etc. here if needed
+    use:enhance={({ formElement }) => {
+    return async ({ result, update }) => {
+        const confirmed = window.confirm(
+          formConfigs.addFlight.message
+        )
 
-      return async ({ result, update }) => {
-        // hide loading state, enable inputs, etc. here if needed
-        await update()
+        if (!confirmed) return // prevent submission if cancelled
+
+        await update({ reset: false }) // preserve values if needed
+
         if (result.type === 'success') {
           close()
         }
       }
     }}
+    
   >
     <h2>{mode === 'create' ? 'Nieuwe flight toevoegen' : 'Flight bewerken'}</h2>
     
@@ -92,7 +109,7 @@
       {/each}
     </select>
     
-    <em>Houd Ctrl <!-- SVG icons --> ingedrukt om meerdere golfers te selecteren.</em>
+    <em>Houd Ctrl / Command ingedrukt om meerdere golfers te selecteren.</em>
     
     <footer>
       <button type="submit">

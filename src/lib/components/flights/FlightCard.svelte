@@ -1,11 +1,10 @@
 <script>
   import Icon from '$lib/components/ui/Icon.svelte'
-  import { enhance } from '$app/forms'
   import { confirmFormSubmit } from '$lib/utils/form.js'
+  import { enhance } from '$app/forms'
 
   let { flight, mode, isExpired, onEdit } = $props()
 
-  // --- Handlers -----------------------------------------------------
   function handleDeleteFlight(flightId) {
     console.log('Delete flight:', flightId)
   }
@@ -14,7 +13,6 @@
     console.log('Remove user:', userId, 'from flight:', flightId)
   }
 
-  // --- Config object for different confirmable forms ----------------
   const formConfigs = {
     deleteFlight: {
       message: 'Weet je zeker dat je deze flight wilt verwijderen?',
