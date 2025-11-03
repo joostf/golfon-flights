@@ -13,7 +13,7 @@
     <i>⛳️</i>
   </button>
   <button class="secondary" onclick={onToggleMode}>
-    <span>{mode === 'edit' ? 'Stop bewerken' : 'Bewerk Flights'}</span>
+    <span>{mode === 'edit' ? 'Stop bewerken' : 'Bewerk flights'}</span>
     <Icon name="edit" />
   </button>
   {/if}
