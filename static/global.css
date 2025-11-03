@@ -35,6 +35,7 @@ body {
   height: 100%;
   padding: 6rem 0;
   font-size: 1em;
+  scroll-behavior: smooth;
   
   @container (min-width: 35em) {
     --_spacing:var(--spacing);
@@ -158,6 +159,11 @@ button {
     --shadow-color:oklch(55.534% 0.09481 194.807);
     background-color: oklch(0.8 0.14 195.36);
   }
+}
+aside {
+  position: sticky;
+  top: 7rem;
+  align-self: start;
 }
 
 aside h2 {

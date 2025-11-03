@@ -26,8 +26,7 @@
 </script>
 
 {#if isExpired(flight.date)}
-  <!-- Expired flight -->
-  <article class:expired={isExpired(flight.date)}>
+  <article class:expired={isExpired(flight.date)} class="flight" data-date={flight.date}>
     <details>
       <summary>
         <h3>
@@ -46,8 +45,7 @@
     </details>
   </article>
 {:else}
-  <!-- Active flight -->
-  <article class="flight">
+  <article class="flight" data-date={flight.date}>
     <header>
       <div>
         <h3>{flight.golf_courses.name}</h3>

@@ -6,7 +6,6 @@
   import FlightFormDialog from '$lib/components/ui/FlightFormDialog.svelte'
   import MessageDialog from '$lib/components/ui/MessageDialog.svelte'
   import Header from '$lib/components/generic/Header.svelte'
-  import { onMount } from 'svelte'
 
   let { form, data } = $props()
 
@@ -29,7 +28,7 @@
   let formEl
   let mode = $state('create') // 'create' | 'edit'
 
-  // helpers
+  // effects 
   $effect(() => {
     if (form?.message) {
       showMessage = true;
@@ -40,6 +39,16 @@
     }
   });
 
+  $effect(() => {
+    const upcomingFlight = document.querySelector('.flight:not(.expired)');
+    if (upcomingFlight) {
+      const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+      const top = upcomingFlight.getBoundingClientRect().top + window.scrollY - headerHeight - 10; // 10px extra padding
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+
+  // helper functions
   function toggleMode() {
     mode = (mode === 'edit' ? 'create' : 'edit');
   }
@@ -92,6 +101,7 @@
         {user}
         {isExpired}
         onEdit={openEditModal}
+        data-date={flight.date}
       />
     {/each}
     

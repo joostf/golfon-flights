@@ -1,10 +1,8 @@
 <script>
   import Icon from '$lib/components/ui/Icon.svelte'
   import { enhance } from '$app/forms'
-  let { mode, onCreateFlight, onToggleMode, user } = $props()
-
-  console.log('user from Header.svelte', user);
   
+  let { mode, onCreateFlight, onToggleMode, user } = $props()
 </script>
 
 <header>
