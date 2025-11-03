@@ -39,13 +39,3 @@ export async function logout({ cookies }) {
   cookies.delete('session', { path: '/' });
   throw redirect(302, '/');
 }
-
-/**
- * Require an authenticated user to access an action.
- * Throws a 401 error if `locals.user` does not exist.
- */
-export function requireUser(locals) {
-  if (!locals.user) {
-    throw error(401, 'Niet geautoriseerd – log in om deze actie uit te voeren.');
-  }
-}
