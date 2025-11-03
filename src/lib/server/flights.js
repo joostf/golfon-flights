@@ -46,19 +46,6 @@ export async function getAllFlightsData() {
   return { flights: formattedFlights, users, golf_courses };
 }
 
-export async function getFlights() {
-  const { data, error } = await supabase
-    .from('flights')
-    .select(`
-      *,
-      golf_courses (id, name),
-      flight_users (user_id, users (id, email, first_name, last_name))
-    `);
-
-  if (error) throw error;
-  return data;
-}
-
 export async function addFlight({ request, locals }) {
   requireUser(locals);
 
