@@ -1,5 +1,5 @@
 import { getAllFlightsData } from '$lib/server/flights.js';
-import { getGolfcourse, getRandomGiphy } from '$lib/server/widgets.js';
+import { getGolfcourse, getRandomGiphy, refreshGiphy } from '$lib/server/widgets.js';
 import { login, logout } from '$lib/server/auth.js';
 import {
   addFlight,
@@ -28,5 +28,6 @@ export const actions = {
   addFlight,
   editFlight,
   deleteFlight,
-  removeUserFromFlight
+  removeUserFromFlight, 
+  refreshGiphy
 };
