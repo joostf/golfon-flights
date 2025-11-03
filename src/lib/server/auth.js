@@ -1,8 +1,6 @@
 import { ADMIN_PASSWORD } from '$env/static/private';
 import { redirect, fail, error } from '@sveltejs/kit';
 
-import { error } from '@sveltejs/kit';
-
 /**
  * Require an authenticated user to access an action.
  * Throws a 401 error if `locals.user` does not exist.
