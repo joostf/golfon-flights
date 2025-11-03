@@ -1,10 +1,8 @@
 <script>
   import Icon from '$lib/components/ui/Icon.svelte'
   import { enhance } from '$app/forms'
-  let { mode, onCreateFlight, onToggleMode, user } = $props()
-
-  console.log('user from Header.svelte', user);
   
+  let { mode, onCreateFlight, onToggleMode, user } = $props()
 </script>
 
 <header>
@@ -15,7 +13,7 @@
     <i>⛳️</i>
   </button>
   <button class="secondary" onclick={onToggleMode}>
-    <span>{mode === 'edit' ? 'Stop bewerken' : 'Bewerk Flights'}</span>
+    <span>{mode === 'edit' ? 'Stop bewerken' : 'Bewerk flights'}</span>
     <Icon name="edit" />
   </button>
   {/if}
