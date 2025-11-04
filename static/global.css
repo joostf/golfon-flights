@@ -34,6 +34,7 @@ body {
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   height: 100%;
   padding: 6rem 0;
+  padding-top: calc(6rem + env(safe-area-inset-top));
   font-size: 1em;
   scroll-behavior: smooth;
   
