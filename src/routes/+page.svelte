@@ -9,6 +9,7 @@
 
   let { form, data } = $props()
 
+  // logged-in user
   let user = data.user
   
   // state
@@ -22,11 +23,9 @@
   let addFlightDialogOpen = $state(false)
   let userMessageDialogOpen = $state(false)
   let showMessage = $state(false)
-  
-  // modal / form references & mode
+  let mode = $state('create') // 'create' | 'edit'
   let addFlightDialog
   let formEl
-  let mode = $state('create') // 'create' | 'edit'
 
   // effects 
   $effect(() => {
@@ -89,7 +88,6 @@
     {user}
     onCreateFlight={openCreateModal}
     onToggleMode={toggleMode}
-    
   />
   
   <main>
@@ -105,12 +103,14 @@
       />
     {/each}
     
+    {#if user}
     <footer>
       <button>
         <span>Download alle flights</span>
         <Icon name="excel" size="24" />
       </button>
     </footer>
+    {/if}
   </main>
 
   <aside>

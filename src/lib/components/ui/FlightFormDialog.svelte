@@ -47,13 +47,12 @@
           formConfigs.addFlight.message
         )
 
-        if (!confirmed) return // prevent submission if cancelled
+        if (!confirmed) return 
 
-        await update({ reset: false }) // preserve values if needed
+        await update({ reset: false }) 
 
-        if (result.type === 'success') {
-          close()
-        }
+        if (result.type === 'success') close()
+        
       }
     }}
   >
