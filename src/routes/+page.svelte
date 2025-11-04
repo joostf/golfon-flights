@@ -140,6 +140,7 @@
     display: grid;
     gap: 1rem;
     grid-template-columns: 1fr;
+    padding-top: calc(5rem + env(safe-area-inset-top));
   }
 
   @container (min-width: 35em) {

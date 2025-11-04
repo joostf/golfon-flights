@@ -162,7 +162,7 @@ button {
 }
 aside {
   position: sticky;
-  top: 7rem;
+  top: calc(7rem + env(safe-area-inset-top));
   align-self: start;
 }
 
