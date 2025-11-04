@@ -1,0 +1,35 @@
+{
+  "name": "Golfon Flights",
+  "short_name": "Golfon flights",
+  "description": "Planning and managing the flights of the golfon friends.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#00e8b6",
+  "theme_color": "#ff69ff",
+  "icons": [
+    {
+      "src": "/icons/icon-golfon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-golfon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/homepage-light.png",
+      "sizes": "3250x1710",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/homepage-mobile.png",
+      "sizes": "924x1546",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
