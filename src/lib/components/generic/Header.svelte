@@ -60,6 +60,10 @@
     flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
+
+    padding-top: env(safe-area-inset-top);
+    height: calc(5rem + env(safe-area-inset-top));
+    backdrop-filter: blur(10px);
   }
 
   header h1 {
